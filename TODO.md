@@ -5,6 +5,8 @@
     - [ ] ageratum.html
 
 # DONE
+  - [X] Extract commentsHtml from guestBookHandler
+  - [X] Create guestBookHandler
   - [X] Chain the handlers
   - [X] Make notFoundError handler
   - [X] Make server with serveFileContents handler
