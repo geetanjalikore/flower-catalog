@@ -1,4 +1,6 @@
 # TODO
+  - [ ] Rename index.js to server.js
+  - [ ] Create startServer.js
   - [ ] Add styles to html pages
     - [ ] index.css
     - [ ] abeliophyllum.html

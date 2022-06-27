@@ -1,6 +1,11 @@
 const fs = require('fs');
+const { guestBookHandler } = require('./serveFileContents.js');
 
-const dynamicHandler = ({ uri, params }, response, path, commentsFile) => {
+const dynamicHandler = ({ uri, params },
+  response,
+  path, commentsFile,
+  template) => {
+
   if (uri === '/guestbook') {
     const { name, comment } = params;
     const date = new Date().toLocaleString();
@@ -9,10 +14,8 @@ const dynamicHandler = ({ uri, params }, response, path, commentsFile) => {
     comments.push({ date, name, comment });
     fs.writeFileSync(commentsFile, JSON.stringify(comments), 'utf8');
 
-    response.statusCode = 302;
-    response.setHeader('Location', '/');
-    response.send('');
-    return true;
+    const fileName = `${path}${uri}.html`;
+    return guestBookHandler(fileName, response, commentsFile, template);
   }
   return false;
 };
