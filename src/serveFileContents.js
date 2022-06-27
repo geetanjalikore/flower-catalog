@@ -47,16 +47,14 @@ const guestBookHandler = (fileName, response, commentsFile, templateFile) => {
   return pageHandler(fileName, response);
 };
 
-const serveFileContents = (request, response, path, template) => {
+const serveFileContents = (request, response, path, commentsFile, template) => {
   let { uri } = request;
   if (uri === '/') {
     uri = '/index.html';
   }
   const fileName = path + uri;
   if (uri === '/guestbook.html') {
-    const commentsFile = './resources/comments.json';
-    const templateFile = `./resources/${template}`;
-    return guestBookHandler(fileName, response, commentsFile, templateFile);
+    return guestBookHandler(fileName, response, commentsFile, template);
   }
   return pageHandler(fileName, response);
 };
