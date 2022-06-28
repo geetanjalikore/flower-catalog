@@ -1,8 +1,8 @@
 # TODO
  - [ ] Exrtact Entity for guestbook comments
- - [ ] Make paser work for multiline input
 
 # DONE
+ - [X] Make paser work for multiline input
  - [X] Add download feature for pdfs
   - [X] Rename index.js to server.js
   - [X] Create startServer.js

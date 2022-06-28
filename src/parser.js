@@ -1,10 +1,15 @@
+const removeSpecialChars = (text) => {
+  const letters = text.split('%0D%0A').join(' ');
+  return letters.split('+').join(' ');
+};
+
 const splitParams = (paramsString) => {
   const params = {};
   const rawParams = paramsString.split('&');
 
   rawParams.forEach(param => {
-    const [num, value] = param.split('=');
-    params[num] = value;
+    const [name, value] = param.split('=');
+    params[name] = removeSpecialChars(value);
   });
   return params;
 };
