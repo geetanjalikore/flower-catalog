@@ -1,12 +1,15 @@
 # TODO
+ - [ ] Exrtact Entity for guestbook comments
+ - [ ] Make paser work for multiline input
+
+# DONE
+ - [X] Add download feature for pdfs
   - [X] Rename index.js to server.js
   - [X] Create startServer.js
   - [X] Add styles to html pages
     - [X] index.css
     - [X] abeliophyllum.html
     - [X] ageratum.html
-
-# DONE
   - [X] Extract commentsHtml from guestBookHandler
   - [X] Create guestBookHandler
   - [X] Chain the handlers
