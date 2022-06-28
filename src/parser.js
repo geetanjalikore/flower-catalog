@@ -1,6 +1,6 @@
-const removeSpecialChars = (text) => {
-  const letters = text.split('%0D%0A').join(' ');
-  return letters.split('+').join(' ');
+const parseMultilineText = (text) => {
+  const parsedText = text.replaceAll(/%\d./g, ' ');
+  return parsedText.replaceAll('+', ' ');
 };
 
 const splitParams = (paramsString) => {
@@ -9,7 +9,7 @@ const splitParams = (paramsString) => {
 
   rawParams.forEach(param => {
     const [name, value] = param.split('=');
-    params[name] = removeSpecialChars(value);
+    params[name] = parseMultilineText(value);
   });
   return params;
 };
