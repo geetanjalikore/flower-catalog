@@ -1,10 +1,10 @@
 # TODO
-  - [ ] Rename index.js to server.js
-  - [ ] Create startServer.js
-  - [ ] Add styles to html pages
-    - [ ] index.css
-    - [ ] abeliophyllum.html
-    - [ ] ageratum.html
+  - [X] Rename index.js to server.js
+  - [X] Create startServer.js
+  - [X] Add styles to html pages
+    - [X] index.css
+    - [X] abeliophyllum.html
+    - [X] ageratum.html
 
 # DONE
   - [X] Extract commentsHtml from guestBookHandler
