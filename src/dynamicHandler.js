@@ -11,7 +11,7 @@ const dynamicHandler = ({ uri, params },
     const date = new Date().toLocaleString();
     const comments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
 
-    comments.push({ date, name, comment });
+    comments.unshift({ date, name, comment });
     fs.writeFileSync(commentsFile, JSON.stringify(comments), 'utf8');
 
     const fileName = `${path}${uri}.html`;
