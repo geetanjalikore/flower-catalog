@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/geetanjalikore/flower-catalog/issues"
   },
-  "homepage": "https://github.com/geetanjalikore/flower-catalog#readme"
+  "homepage": "https://github.com/geetanjalikore/flower-catalog#readme",
+  "dependencies": {
+    "mime-types": "^2.1.35"
+  }
 }

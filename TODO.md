@@ -1,8 +1,9 @@
 # TODO
-  - [ ] Use mimetype and path modules
+  - [ ] Verify method is get in url
   - [ ] parsist the comments of guestbook into file
   
 # DONE
+  - [X] Use mimetype and path modules
   - [X] Extract router into app.js
   - [X] Change directory structure of src into handlers and server
   - [X] Extract createHtml into different file

@@ -23,6 +23,8 @@ function addCommentHandler(req, res, comments) {
 
 const showGuestBook = (res, template, comments) => {
   const result = template.replace('__COMMENTS__', commentsHtml(comments));
+  res.setHeader('content-type', 'text/html');
+  res.setHeader('content-length', result.length);
   res.end(result);
   return true;
 };

@@ -1,3 +1,4 @@
 resources/
 references/
+node_modules
 public/guestbook.html
