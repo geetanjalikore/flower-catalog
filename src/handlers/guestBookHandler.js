@@ -1,18 +1,9 @@
 const fs = require('fs');
 const { commentsHtml } = require('./createCommentsHtml.js');
 
-const convertParams = (searchParams) => {
-  const params = {};
-  for (const [field, value] of searchParams.entries()) {
-    params[field] = value;
-  }
-  return params;
-};
-
 function addCommentHandler(req, res, guestBookPath) {
-  const { searchParams } = req.url;
   const { comments } = req;
-  const params = convertParams(searchParams);
+  const { params } = req.url;
   params.date = new Date().toLocaleString();
   comments.unshift(params);
   fs.writeFileSync(guestBookPath, JSON.stringify(comments), 'utf8');
@@ -47,22 +38,19 @@ const guestBookHandler = (comments, template, guestBookPath) => {
 
   return (req, res) => {
     const { pathname } = req.url;
-    const { method } = req;
 
     if (pathname === '/add-comment') {
-      const handler = methodsAllowed[pathname][method];
-      if (handler) {
+      if (req.method === 'GET') {
         req.comments = comments;
-        return handler(req, res, guestBookPath);
+        return addCommentHandler(req, res, guestBookPath);
       }
       return invalidReqMethod(req, res);
     }
 
     if (pathname === '/guestbook.html') {
-      const handler = methodsAllowed[pathname][method];
-      if (handler) {
+      if (req.method === 'GET') {
         req.comments = comments;
-        return handler(req, res, template);
+        return showGuestBook(req, res, template);
       }
       return invalidReqMethod(req, res);
     }

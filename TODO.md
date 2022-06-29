@@ -1,10 +1,10 @@
 # TODO
-  - [ ] Make a handler for parsing query params
   - [ ] Pass the dependacies in config
   - [ ] Modify invalid request method function 
     - use data stucture to stores the request methods allowed on resourse
 
 # DONE
+  - [X] Make a handler for parsing query params
   - [X] parsist the comments of guestbook into file
   - [X] Verify method is get in url
   - [X] Use mimetype and path modules
