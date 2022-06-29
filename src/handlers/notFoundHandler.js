@@ -1,6 +1,6 @@
-const notFoundHandler = (request, response) => {
-  response.statusCode = 404;
-  response.end('Invalid Request');
+const notFoundHandler = (req, res) => {
+  res.statusCode = 404;
+  res.end('Invalid Request');
 };
 
 module.exports = { notFoundHandler };

@@ -6,7 +6,7 @@ const main = (path, guestbook, templateFile) => {
   const template = fs.readFileSync(templateFile, 'utf8');
   const comments = JSON.parse(fs.readFileSync(guestbook, 'utf8'));
 
-  const router = createRouter(path, comments, template);
+  const router = createRouter(path, comments, template, guestbook);
   startServer(8080, router);
 };
 

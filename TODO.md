@@ -1,8 +1,10 @@
 # TODO
-  - [ ] Verify method is get in url
-  - [ ] parsist the comments of guestbook into file
-  
+ - [ ] Modify invalid request method function 
+    - use data stucture to stores the request methods allowed on resourse
+
 # DONE
+  - [X] parsist the comments of guestbook into file
+  - [X] Verify method is get in url
   - [X] Use mimetype and path modules
   - [X] Extract router into app.js
   - [X] Change directory structure of src into handlers and server
