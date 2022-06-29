@@ -1,6 +1,5 @@
 const fs = require('fs');
-const { commentsHtml } = require('./createHtml.js');
-const { invalidReqMethod } = require('./invalidReqMethod.js');
+const { commentsHtml } = require('./createCommentsHtml.js');
 
 const convertParams = (searchParams) => {
   const params = {};
@@ -10,8 +9,9 @@ const convertParams = (searchParams) => {
   return params;
 };
 
-function addCommentHandler(req, res, comments, guestBookPath) {
+function addCommentHandler(req, res, guestBookPath) {
   const { searchParams } = req.url;
+  const { comments } = req;
   const params = convertParams(searchParams);
   params.date = new Date().toLocaleString();
   comments.unshift(params);
@@ -24,7 +24,7 @@ function addCommentHandler(req, res, comments, guestBookPath) {
   return true;
 }
 
-const showGuestBook = (res, template, comments) => {
+const showGuestBook = ({ comments }, res, template) => {
   const result = template.replace('__COMMENTS__', commentsHtml(comments));
 
   res.setHeader('content-type', 'text/html');
@@ -33,20 +33,38 @@ const showGuestBook = (res, template, comments) => {
   return true;
 };
 
+const invalidReqMethod = (req, res) => {
+  res.statusCode = 405;
+  res.end('Invalid request method');
+  return true;
+};
+
 const guestBookHandler = (comments, template, guestBookPath) => {
+  const methodsAllowed = {
+    '/add-comment': { 'GET': addCommentHandler },
+    '/guestbook.html': { 'GET': showGuestBook }
+  };
+
   return (req, res) => {
     const { pathname } = req.url;
+    const { method } = req;
 
-    if (req.method !== 'GET') {
+    if (pathname === '/add-comment') {
+      const handler = methodsAllowed[pathname][method];
+      if (handler) {
+        req.comments = comments;
+        return handler(req, res, guestBookPath);
+      }
       return invalidReqMethod(req, res);
     }
 
-    if (pathname === '/add-comment') {
-      return addCommentHandler(req, res, comments, guestBookPath);
-    }
-
     if (pathname === '/guestbook.html') {
-      return showGuestBook(res, template, comments);
+      const handler = methodsAllowed[pathname][method];
+      if (handler) {
+        req.comments = comments;
+        return handler(req, res, template);
+      }
+      return invalidReqMethod(req, res);
     }
     return false;
   };

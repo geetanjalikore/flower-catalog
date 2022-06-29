@@ -1,6 +1,11 @@
 const fs = require('fs');
 const mime = require('mime-types');
-const { invalidReqMethod } = require('../handlers/invalidReqMethod.js');
+
+const invalidReqMethod = (req, res) => {
+  res.statusCode = 405;
+  res.end('Invalid request method');
+  return true;
+};
 
 const getFileName = ({ url }, path) => {
   const { pathname } = url;

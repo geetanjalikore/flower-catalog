@@ -1,5 +1,7 @@
 # TODO
- - [ ] Modify invalid request method function 
+  - [ ] Make a handler for parsing query params
+  - [ ] Pass the dependacies in config
+  - [ ] Modify invalid request method function 
     - use data stucture to stores the request methods allowed on resourse
 
 # DONE
