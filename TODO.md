@@ -1,7 +1,14 @@
 # TODO
- - [ ] Exrtact Entity for guestbook comments
-
+  - [ ] Use mimetype and path modules
+  - [ ] parsist the comments of guestbook into file
+  
 # DONE
+  - [X] Extract router into app.js
+  - [X] Change directory structure of src into handlers and server
+  - [X] Extract createHtml into different file
+  - [X] Modify guestbook handler
+  - [X] Use http server for serving the file contents.
+  - [X] ~~Exrtact Entity for guestbook comments~~
  - [X] Make paser work for multiline input
  - [X] Add download feature for pdfs
   - [X] Rename index.js to server.js
