@@ -4,6 +4,7 @@
     - use data stucture to stores the request methods allowed on resourse
 
 # DONE
+  - [X] Create a handler for log request
   - [X] Make a handler for parsing query params
   - [X] parsist the comments of guestbook into file
   - [X] Verify method is get in url
