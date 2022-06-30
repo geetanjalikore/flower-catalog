@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-function addCommentHandler(req, res, guestBookPath) {
+const addCommentHandler = (req, res, guestBookPath) => {
   const { comments } = req;
   const { params } = req.url;
   params.date = new Date().toLocaleString();
@@ -12,6 +12,6 @@ function addCommentHandler(req, res, guestBookPath) {
   res.end('');
 
   return true;
-}
+};
 
 module.exports = { addCommentHandler };
