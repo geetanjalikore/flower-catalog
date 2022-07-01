@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/geetanjalikore/flower-catalog#readme",
   "dependencies": {
-    "mime-types": "^2.1.35"
+    "mime-types": "^2.1.35",
+    "server": "github:geetanjalikore/server"
   }
 }

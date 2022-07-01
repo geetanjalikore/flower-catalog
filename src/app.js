@@ -1,12 +1,11 @@
-const { createHandler } = require('./server/createHandler.js');
+const { createRouter, notFoundHandler } = require('server');
 const { serveStatic } = require('./server/serveStatic.js');
-const { notFoundHandler } = require('./handlers/notFoundHandler.js');
 const { guestBookRouter } = require('./handlers/guestBookRouter.js');
 const { parseParams } = require('./handlers/parseParams.js');
 const { logRequest } = require('./handlers/logRequest.js');
 
-const createRouter = (path, comments, template, guestBookPath) => {
-  return createHandler(
+const app = (path, comments, template, guestBookPath) => {
+  return createRouter(
     logRequest,
     parseParams,
     guestBookRouter(comments, template, guestBookPath),
@@ -15,4 +14,4 @@ const createRouter = (path, comments, template, guestBookPath) => {
   );
 };
 
-module.exports = { createRouter };
+module.exports = { app };

@@ -1,13 +1,12 @@
 const fs = require('fs');
-const { startServer } = require('./src/server/server.js');
-const { createRouter } = require('./src/app.js');
+const { startServer } = require('server');
+const { app } = require('./src/app');
 
 const main = ({ path, guestbook, templateFile }) => {
   const template = fs.readFileSync(templateFile, 'utf8');
   const comments = JSON.parse(fs.readFileSync(guestbook, 'utf8'));
 
-  const router = createRouter(path, comments, template, guestbook);
-  startServer(8080, router);
+  startServer(8080, app(path, comments, template, guestbook));
 };
 
 const config = {
