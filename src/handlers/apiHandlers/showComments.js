@@ -3,4 +3,5 @@ const showComments = ({ comments }, res) => {
   res.end(JSON.stringify(comments));
   return true;
 };
+
 exports.showComments = showComments;

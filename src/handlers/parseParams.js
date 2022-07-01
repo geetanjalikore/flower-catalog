@@ -1,11 +1,11 @@
-const parseParams = (req, res) => {
-  const { searchParams } = req.url;
+const parseParams = (req, res, next) => {
+  const { bodyParams } = req;
   const params = {};
-  for (const [field, value] of searchParams.entries()) {
+  for (const [field, value] of bodyParams.entries()) {
     params[field] = value;
   }
-  req.url.params = params;
-  return false;
+  req.bodyParams = params;
+  next();
 };
 
 module.exports = { parseParams };

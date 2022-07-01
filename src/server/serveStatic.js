@@ -16,7 +16,7 @@ const getFileName = ({ url }, path) => {
 };
 
 const serveStatic = (path) => {
-  return (req, res) => {
+  return (req, res, next) => {
     if (!req.method === 'GET') {
       return invalidReqMethod(req, res);
     }
@@ -28,9 +28,8 @@ const serveStatic = (path) => {
       res.setHeader('content-length', content.length);
       res.end(content);
     } catch (error) {
-      return false;
+      next();
     }
-    return true;
   };
 };
 

@@ -1,6 +1,6 @@
-const logRequest = (req, res) => {
+const logRequest = (req, res, next) => {
   console.log(req.url.pathname);
-  return false;
+  next();
 };
 
 module.exports = { logRequest };
