@@ -7,10 +7,11 @@ const { receiveBodyParams } = require('./handlers/parseBodyParams.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { injectCookies } = require('./handlers/injectCookies.js');
 const { injectSession } = require('./handlers/injectSession.js');
-
-const sessions = {};
+const { logoutHandler } = require("./handlers/logoutHandler");
 
 const app = (path, comments, template, guestBookPath) => {
+  const sessions = {};
+
   return createRouter(
     receiveBodyParams,
     parseParams,
@@ -18,6 +19,7 @@ const app = (path, comments, template, guestBookPath) => {
     injectCookies,
     injectSession(sessions),
     loginHandler(sessions),
+    logoutHandler(sessions),
     guestBookRouter(comments, template, guestBookPath),
     serveStatic(path),
     notFoundHandler
