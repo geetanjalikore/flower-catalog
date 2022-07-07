@@ -17,7 +17,7 @@ const getFileName = ({ url }, path) => {
 
 const serveStatic = (path) => {
   return (req, res, next) => {
-    if (!req.method === 'GET') {
+    if (req.method !== 'GET') {
       return invalidReqMethod(req, res);
     }
 
