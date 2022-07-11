@@ -1,10 +1,20 @@
+const xhrReq = (method, url, status, cb, body) => {
+  const xhr = new XMLHttpRequest();
+
+  xhr.onload = () => {
+    if (status === xhr.status) cb(xhr);
+  };
+  xhr.open(method, url);
+  xhr.send(body);
+};
+
 const td = (content) => {
   const element = document.createElement('td');
   element.innerText = content;
   return element;
 };
 
-const createCommentRow = (date, name, comment) => {
+const createCommentRow = ({ date, name, comment }) => {
   const commentRow = document.createElement('tr');
   commentRow.appendChild(td(date));
   commentRow.appendChild(td(name));
@@ -16,8 +26,8 @@ const createCommentRow = (date, name, comment) => {
 const createCommentsHtml = (comments) => {
   const tbody = document.createElement('tbody');
 
-  comments.forEach(({ date, name, comment }) => {
-    const commentRow = createCommentRow(date, name, comment);
+  comments.forEach(comment => {
+    const commentRow = createCommentRow(comment);
     tbody.appendChild(commentRow);
   });
 
@@ -38,33 +48,22 @@ const replaceComments = (comments) => {
 }
 
 const reqComments = () => {
-  const xhrComments = new XMLHttpRequest();
-
-  xhrComments.onload = () => {
-    if (xhrComments.status === 201) {
-      const comments = JSON.parse(xhrComments.responseText);
-      resetForm();
-      replaceComments(comments);
-    }
+  cb = ({ responseText }) => {
+    const comments = JSON.parse(responseText);
+    resetForm();
+    replaceComments(comments);
   };
 
-  xhrComments.open('GET', '/comments');
-  xhrComments.send();
+  xhrReq('GET', '/comments', 201, cb);
 };
 
 const getFormData = () => {
   const form = document.querySelector('form');
   const formData = new FormData(form);
   return new URLSearchParams(formData).toString();
-}
+};
 
 const xhrAddComment = () => {
-  const xhr = new XMLHttpRequest();
-  xhr.onload = () => {
-    if (xhr.status === 201) reqComments();
-  };
-
   const comment = getFormData();
-  xhr.open('POST', '/add-comment');
-  xhr.send(comment);
+  xhrReq('POST', '/add-comment', 201, reqComments, comment);
 };

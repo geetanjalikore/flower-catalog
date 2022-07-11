@@ -21,7 +21,6 @@ const guestBookRouter = (comments, template, guestBookPath) => {
       res.end(JSON.stringify(comments));
       return;
     }
-
     next();
   }
 };
