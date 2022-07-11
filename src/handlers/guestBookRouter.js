@@ -11,10 +11,17 @@ const guestBookRouter = (comments, template, guestBookPath) => {
       return;
     }
 
-    if (pathname === '/guestbook.html' && req.method == 'GET') {
+    if (pathname === '/guestbook.html' && req.method === 'GET') {
       showGuestBook(req, res, template);
       return;
     }
+
+    if (pathname === '/comments' && req.method === 'GET') {
+      res.statusCode = 201;
+      res.end(JSON.stringify(comments));
+      return;
+    }
+
     next();
   }
 };

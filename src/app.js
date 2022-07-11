@@ -1,9 +1,9 @@
 const { createRouter, notFoundHandler } = require('server');
 const { serveStatic } = require('./server/serveStatic.js');
 const { guestBookRouter } = require('./handlers/guestBookRouter.js');
-const { parseParams } = require('./handlers/parseParams.js');
+const { parseBodyParams } = require('./handlers/parseBodyParams.js');
 const { logRequest } = require('./handlers/logRequest.js');
-const { receiveBodyParams } = require('./handlers/parseBodyParams.js');
+const { receiveBodyParams } = require('./handlers/receiveBodyParams.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { injectCookies } = require('./handlers/injectCookies.js');
 const { injectSession } = require('./handlers/injectSession.js');
@@ -21,7 +21,7 @@ const app = (path,
 
   return createRouter(
     receiveBodyParams,
-    parseParams,
+    parseBodyParams,
     logRequest,
     injectCookies,
     injectSession(sessions),

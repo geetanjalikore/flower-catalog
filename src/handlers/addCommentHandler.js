@@ -5,11 +5,11 @@ const addCommentHandler = (req, res, guestBookPath) => {
   bodyParams.name = session.username;
   bodyParams.date = new Date().toLocaleString();
   comments.unshift(bodyParams);
-  fs.writeFileSync(guestBookPath, JSON.stringify(comments), 'utf8');
 
-  res.statusCode = 302;
-  res.setHeader('Location', '/guestbook.html');
-  res.end('');
+  const commentsString = JSON.stringify(comments);
+  fs.writeFileSync(guestBookPath, commentsString, 'utf8');
+  res.statusCode = 201
+  res.end('Added comment successfully');
 };
 
 module.exports = { addCommentHandler };

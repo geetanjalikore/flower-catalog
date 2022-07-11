@@ -1,13 +1,11 @@
-const receiveBodyParams = (req, res, next) => {
-  let data = '';
-  req.on('data', (chunk) => {
-    data += chunk;
-  });
-
-  req.on('end', () => {
-    req.bodyParams = new URLSearchParams(data);
-    next();
-  });
+const parseBodyParams = (req, res, next) => {
+  const { bodyParams } = req;
+  const params = {};
+  for (const [field, value] of bodyParams.entries()) {
+    params[field] = value;
+  }
+  req.bodyParams = params;
+  next();
 };
 
-module.exports = { receiveBodyParams };
+module.exports = { parseBodyParams };
