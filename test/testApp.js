@@ -25,11 +25,7 @@ describe('GET /', () => {
       .get('/')
       .set('cookie', 'id=1')
       .expect(200)
-      .expect('content-type', /html/)
-      .end((err, res) => {
-        if (err) throw err;
-        done();
-      });
+      .expect('content-type', /html/, done);
   });
 
   it('Should respond with Unauthorized access', (done) => {
@@ -72,6 +68,7 @@ describe('GET /unknown', () => {
     request(router)
       .get('/unknown')
       .set('cookie', 'id=1')
+      .expect('/unknown not found')
       .expect(404, done);
   });
 });
@@ -85,7 +82,7 @@ describe('GET /comments', () => {
       .expect(200, done);
   });
 
-  it.skip('Should add comment ', (done) => {
+  it('Should add comment ', (done) => {
     request(router)
       .post('/add-comment')
       .send('comment=nice')
@@ -131,7 +128,7 @@ describe('GET /signup', () => {
 });
 
 describe('POST /signup', () => {
-  it.skip('Should register user', (done) => {
+  it('Should register user', (done) => {
     request(router)
       .post('/signup')
       .send('username=nilam&password=jadhav')
@@ -155,6 +152,7 @@ describe('GET /api.comments', () => {
     request(router)
       .get('/api.comments')
       .set('cookie', 'id=1')
+      .expect('content-type', /json/)
       .expect(200, done);
   });
 });
