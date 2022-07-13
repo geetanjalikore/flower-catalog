@@ -17,7 +17,7 @@ const guestBookRouter = (comments, template, guestBookPath) => {
     }
 
     if (pathname === '/comments' && req.method === 'GET') {
-      res.statusCode = 201;
+      res.setHeader('content-type', 'text/json');
       res.end(JSON.stringify(comments));
       return;
     }

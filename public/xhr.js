@@ -54,7 +54,7 @@ const reqComments = () => {
     replaceComments(comments);
   };
 
-  xhrReq('GET', '/comments', 201, cb);
+  xhrReq('GET', '/comments', 200, cb);
 };
 
 const getFormData = () => {

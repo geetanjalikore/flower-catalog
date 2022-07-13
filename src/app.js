@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { createRouter, notFoundHandler } = require('server');
 const { serveStatic } = require('./server/serveStatic.js');
 const { guestBookRouter } = require('./handlers/guestBookRouter.js');
@@ -10,14 +11,10 @@ const { injectSession } = require('./handlers/injectSession.js');
 const { logoutHandler } = require('./handlers/logoutHandler');
 const { signUpHandler } = require('./handlers/signUpHandler.js');
 
-const app = (path,
-  comments,
-  template,
-  guestBookPath,
-  users,
-  userCredentialsPath
-) => {
-  const sessions = {};
+const app = ({ path, guestbook, templateFile, userCredentialsPath }, sessions) => {
+  const template = fs.readFileSync(templateFile, 'utf8');
+  const comments = JSON.parse(fs.readFileSync(guestbook, 'utf8'));
+  const users = JSON.parse(fs.readFileSync(userCredentialsPath, 'utf8'));
 
   return createRouter(
     receiveBodyParams,
@@ -28,7 +25,7 @@ const app = (path,
     signUpHandler(users, userCredentialsPath),
     loginHandler(users, sessions),
     logoutHandler(sessions),
-    guestBookRouter(comments, template, guestBookPath),
+    guestBookRouter(comments, template, guestbook),
     serveStatic(path),
     notFoundHandler
   );

@@ -33,7 +33,6 @@ const isRegistered = (loginUsername, loginPassword, users) => {
 const loginHandler = (users, sessions) => {
   return (req, res, next) => {
     const { pathname } = req.url;
-
     if (pathname !== '/login') {
       if (!req.session) {
         res.statusCode = 401;
@@ -52,6 +51,7 @@ const loginHandler = (users, sessions) => {
 
     const { bodyParams: { username, password } } = req;
     if (!isRegistered(username, password, users)) {
+      res.statusCode = 401;
       res.end('Please register your details');
       return;
     }

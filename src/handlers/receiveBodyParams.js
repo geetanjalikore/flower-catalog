@@ -5,6 +5,7 @@ const receiveBodyParams = (req, res, next) => {
   });
 
   req.on('end', () => {
+    req.url = new URL(`http://${req.headers.host}${req.url}`);
     req.bodyParams = new URLSearchParams(data);
     next();
   });

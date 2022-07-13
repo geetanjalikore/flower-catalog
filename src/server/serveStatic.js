@@ -17,6 +17,7 @@ const getFileName = ({ url }, path) => {
 
 const serveStatic = (path) => {
   return (req, res, next) => {
+
     if (req.method !== 'GET') {
       return invalidReqMethod(req, res);
     }
@@ -25,7 +26,6 @@ const serveStatic = (path) => {
     try {
       const content = fs.readFileSync(fileName);
       res.setHeader('content-type', mime.lookup(fileName));
-      res.setHeader('content-length', content.length);
       res.end(content);
     } catch (error) {
       next();
