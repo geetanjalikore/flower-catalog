@@ -139,3 +139,22 @@ describe('POST /signup', () => {
       .expect(200, done);
   });
 });
+
+describe('GET /api.search', () => {
+  it('Should search the comments by name', (done) => {
+    request(router)
+      .get('/api.search?name=abin')
+      .set('cookie', 'id=1')
+      .expect('content-type', /json/)
+      .expect(200, done);
+  });
+});
+
+describe('GET /api.comments', () => {
+  it('Should respond with all comments', (done) => {
+    request(router)
+      .get('/api.comments')
+      .set('cookie', 'id=1')
+      .expect(200, done);
+  });
+});

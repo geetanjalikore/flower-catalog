@@ -4,6 +4,7 @@ const search = (comments, params) => {
 
 const searchComment = ({ comments, url }, res) => {
   const { params } = url;
+
   res.setHeader('content-type', 'application/json');
   const result = search(comments, params);
   res.end(JSON.stringify(result));

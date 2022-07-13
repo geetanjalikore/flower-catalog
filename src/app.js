@@ -10,6 +10,8 @@ const { injectCookies } = require('./handlers/injectCookies.js');
 const { injectSession } = require('./handlers/injectSession.js');
 const { logoutHandler } = require('./handlers/logoutHandler');
 const { signUpHandler } = require('./handlers/signUpHandler.js');
+const { guestBookApi } = require('./handlers/apiHandlers/guestBookApi.js');
+const { parseSearchParams } = require('./handlers/parseSearchParams.js');
 
 const app = ({ path, guestbook, templateFile, userCredentialsPath }, sessions) => {
   const template = fs.readFileSync(templateFile, 'utf8');
@@ -19,12 +21,14 @@ const app = ({ path, guestbook, templateFile, userCredentialsPath }, sessions) =
   return createRouter(
     receiveBodyParams,
     parseBodyParams,
+    parseSearchParams,
     logRequest,
     injectCookies,
     injectSession(sessions),
     signUpHandler(users, userCredentialsPath),
     loginHandler(users, sessions),
     logoutHandler(sessions),
+    guestBookApi(comments),
     guestBookRouter(comments, template, guestbook),
     serveStatic(path),
     notFoundHandler
