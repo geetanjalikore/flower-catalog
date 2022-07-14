@@ -13,19 +13,19 @@ const { signUpHandler } = require('./handlers/signUpHandler.js');
 const { guestBookApi } = require('./handlers/apiHandlers/guestBookApi.js');
 const { parseSearchParams } = require('./handlers/parseSearchParams.js');
 
-const app = ({ path, guestbook, templateFile, userCredentialsPath }, sessions) => {
+const app = ({ path, guestbook, templateFile, usersPath }, sessions, logger) => {
   const template = fs.readFileSync(templateFile, 'utf8');
   const comments = JSON.parse(fs.readFileSync(guestbook, 'utf8'));
-  const users = JSON.parse(fs.readFileSync(userCredentialsPath, 'utf8'));
+  const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
 
   return createRouter(
     receiveBodyParams,
     parseBodyParams,
     parseSearchParams,
-    logRequest,
+    logRequest(logger),
     injectCookies,
     injectSession(sessions),
-    signUpHandler(users, userCredentialsPath),
+    signUpHandler(users, usersPath),
     loginHandler(users, sessions),
     logoutHandler(sessions),
     guestBookApi(comments),

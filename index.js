@@ -6,10 +6,10 @@ const main = () => {
     guestbook: 'resources/comments.json',
     templateFile: 'resources/guestBookTemplate.html',
     path: './public',
-    userCredentialsPath: 'resources/creadentials.json'
+    usersPath: 'resources/users.json'
   };
 
-  startServer(8080, app(config, {}));
+  startServer(8080, app(config, {}, console.log));
 };
 
 main();

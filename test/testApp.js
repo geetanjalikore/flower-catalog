@@ -1,23 +1,30 @@
 const request = require('supertest');
 const { app } = require('../src/app.js');
 
-const config = {
-  path: './public',
-  guestbook: './test/resources/comments.json',
-  templateFile: './test/resources/guestBookTemplate.html',
-  userCredentialsPath: './test/resources/creadentials.json'
-};
+const setupRouter = (sessions) => {
+  const config = {
+    path: './public',
+    guestbook: './test/resources/comments.json',
+    templateFile: './test/resources/guestBookTemplate.html',
+    usersPath: './test/resources/users.json'
+  };
 
-const sessions = {
-  '1': {
-    id: 1,
-    username: 'abin',
-    date: new Date().toLocaleString()
-  }
+  const identity = (x) => x;
+  return app(config, sessions, identity);
 };
 
 let router;
-beforeEach(() => router = app(config, sessions));
+
+beforeEach(() => {
+  const sessions = {
+    '1': {
+      id: 1,
+      username: 'abin',
+    }
+  };
+
+  router = setupRouter(sessions);
+});
 
 describe('GET /', () => {
   it('Should respond with index.html', (done) => {
@@ -29,7 +36,7 @@ describe('GET /', () => {
   });
 
   it('Should respond with Unauthorized access', (done) => {
-    request(app(config, {}))
+    request(setupRouter({}))
       .get('/')
       .expect('Access Denied !!! Login to access the flower-catalog')
       .expect(401, done);
@@ -104,7 +111,7 @@ describe('POST /login - Registered User', () => {
   it('Should respond with index.html', (done) => {
     request(router)
       .post('/login')
-      .send('username=geets&password=abcd')
+      .send('username=nilam&password=jadhav')
       .expect(302)
       .expect('Location', '/index.html', done);
   });
