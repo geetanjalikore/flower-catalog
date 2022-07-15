@@ -4,6 +4,7 @@ const xhrReq = (method, url, status, cb, body) => {
   xhr.onload = () => {
     if (status === xhr.status) cb(xhr);
   };
+
   xhr.open(method, url);
   xhr.send(body);
 };
@@ -60,7 +61,7 @@ const reqComments = () => {
 const getFormData = () => {
   const form = document.querySelector('form');
   const formData = new FormData(form);
-  return new URLSearchParams(formData).toString();
+  return new URLSearchParams(formData);
 };
 
 const xhrAddComment = () => {

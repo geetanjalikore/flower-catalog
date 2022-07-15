@@ -2,13 +2,13 @@ const search = (comments, params) => {
   return comments.find(({ name }) => name === params.name);
 };
 
-const searchComment = ({ comments, url }, res) => {
-  const { params } = url;
+const searchComment = (comments) => (req, res) => {
+  const { method, url, query } = req;
 
-  res.setHeader('content-type', 'application/json');
-  const result = search(comments, params);
-  res.end(JSON.stringify(result));
-  return true;
+  if (method === 'GET') {
+    const result = search(comments, query);
+    res.json(result);
+  }
 };
 
 module.exports = { searchComment };

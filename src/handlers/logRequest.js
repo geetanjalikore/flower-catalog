@@ -1,5 +1,5 @@
 const logRequest = (logger) => (req, res, next) => {
-  logger(req.url.pathname);
+  logger(req.url);
   next();
 };
 

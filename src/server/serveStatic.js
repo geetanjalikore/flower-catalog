@@ -1,5 +1,4 @@
 const fs = require('fs');
-const mime = require('mime-types');
 
 const invalidReqMethod = (req, res) => {
   res.statusCode = 405;
@@ -7,13 +6,6 @@ const invalidReqMethod = (req, res) => {
   return true;
 };
 
-const getFileName = ({ url }, path) => {
-  const { pathname } = url;
-  if (pathname === '/') {
-    return path + '/index.html';
-  }
-  return path + pathname;
-};
 
 const serveStatic = (path) => {
   return (req, res, next) => {
@@ -22,10 +14,9 @@ const serveStatic = (path) => {
       return invalidReqMethod(req, res);
     }
 
-    const fileName = getFileName(req, path);
+    const fileName = req.url;
     try {
       const content = fs.readFileSync(fileName);
-      res.setHeader('content-type', mime.lookup(fileName));
       res.end(content);
     } catch (error) {
       next();

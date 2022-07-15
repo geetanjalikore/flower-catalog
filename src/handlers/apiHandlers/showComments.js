@@ -1,7 +1,7 @@
-const showComments = ({ comments }, res) => {
-  res.setHeader('content-type', 'application/json');
-  res.end(JSON.stringify(comments));
-  return true;
+const showComments = (comments) => (req, res, next) => {
+  if (req.method === 'GET') {
+    res.json(comments);
+  }
 };
 
 exports.showComments = showComments;

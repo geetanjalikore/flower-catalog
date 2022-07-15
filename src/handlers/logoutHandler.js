@@ -1,10 +1,10 @@
 const logoutHandler = (sessions) => (req, res, next) => {
   const { id } = req.cookies;
-  const { pathname } = req.url;
+  const { url } = req;
 
-  if (pathname === '/logout') {
+  if (url === '/logout') {
     delete sessions[req.session[id]];
-    res.setHeader('Set-Cookie', `id=${id};max-age=0`);
+    res.clearCookie('id');
     res.end('Logged out successfully');
     return;
   }

@@ -3,22 +3,21 @@ const { showGuestBook } = require('./showGuestBook.js');
 
 const guestBookRouter = (comments, template, guestBookPath) => {
   return (req, res, next) => {
-    const { pathname } = req.url;
+    const { url } = req;
     req.comments = comments;
 
-    if (pathname === '/add-comment' && req.method === 'POST') {
+    if (url === '/add-comment' && req.method === 'POST') {
       addCommentHandler(req, res, guestBookPath);
       return;
     }
 
-    if (pathname === '/guestbook.html' && req.method === 'GET') {
+    if (url === '/guestbook.html' && req.method === 'GET') {
       showGuestBook(req, res, template);
       return;
     }
 
-    if (pathname === '/comments' && req.method === 'GET') {
-      res.setHeader('content-type', 'text/json');
-      res.end(JSON.stringify(comments));
+    if (url === '/comments' && req.method === 'GET') {
+      res.json(comments);
       return;
     }
     next();

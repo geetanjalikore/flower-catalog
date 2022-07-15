@@ -32,8 +32,8 @@ const isRegistered = (loginUsername, loginPassword, users) => {
 
 const loginHandler = (users, sessions) => {
   return (req, res, next) => {
-    const { pathname } = req.url;
-    if (pathname !== '/login') {
+    const { url } = req;
+    if (url !== '/login') {
       if (!req.session) {
         res.statusCode = 401;
         res.end('Access Denied !!! Login to access the flower-catalog');
@@ -49,7 +49,7 @@ const loginHandler = (users, sessions) => {
       return;
     }
 
-    const { bodyParams: { username, password } } = req;
+    const { username, password } = req.body;
     if (!isRegistered(username, password, users)) {
       res.statusCode = 401;
       res.end('Please register your details');
@@ -59,10 +59,8 @@ const loginHandler = (users, sessions) => {
     const session = createSession(username, password);
     sessions[session.id] = session;
 
-    res.setHeader('Set-Cookie', `id=${session.id}`);
-    res.setHeader('Location', '/index.html');
-    res.statusCode = 302;
-    res.end();
+    res.cookie('id', `${session.id}`);
+    res.redirect('/index.html');
   };
 };
 

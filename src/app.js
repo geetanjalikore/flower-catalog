@@ -1,38 +1,58 @@
 const fs = require('fs');
-const { createRouter, notFoundHandler } = require('server');
-const { serveStatic } = require('./server/serveStatic.js');
-const { guestBookRouter } = require('./handlers/guestBookRouter.js');
-const { parseBodyParams } = require('./handlers/parseBodyParams.js');
+const express = require('express');
 const { logRequest } = require('./handlers/logRequest.js');
-const { receiveBodyParams } = require('./handlers/receiveBodyParams.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { injectCookies } = require('./handlers/injectCookies.js');
 const { injectSession } = require('./handlers/injectSession.js');
 const { logoutHandler } = require('./handlers/logoutHandler');
 const { signUpHandler } = require('./handlers/signUpHandler.js');
-const { guestBookApi } = require('./handlers/apiHandlers/guestBookApi.js');
-const { parseSearchParams } = require('./handlers/parseSearchParams.js');
+const { searchComment } = require('./handlers/apiHandlers/search.js');
+const { showComments } = require('./handlers/apiHandlers/showComments.js');
+const { showGuestBook } = require('./handlers/showGuestBook.js');
+const { addComment } = require('./handlers/addCommentHandler.js');
+const { getComments } = require('./handlers/getComments.js');
 
-const app = ({ path, guestbook, templateFile, usersPath }, sessions, logger) => {
+const createGuestbookRouter = (templateFile, guestbook) => {
+  const guestBookRouter = express.Router();
+
   const template = fs.readFileSync(templateFile, 'utf8');
   const comments = JSON.parse(fs.readFileSync(guestbook, 'utf8'));
+
+  guestBookRouter.get('/guestbook.html', showGuestBook(comments, template));
+  guestBookRouter.post('/add-comment', addComment(comments, guestbook));
+  guestBookRouter.get('/comments', getComments(comments));
+  guestBookRouter.get('/api.comments', showComments(comments));
+  guestBookRouter.get(/\/api.search.*/, searchComment(comments));
+
+  return guestBookRouter;
+}
+
+const createApp = ({ path, guestbook, templateFile, usersPath },
+  sessions,
+  logger
+) => {
+
   const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
+  const app = express();
 
-  return createRouter(
-    receiveBodyParams,
-    parseBodyParams,
-    parseSearchParams,
-    logRequest(logger),
-    injectCookies,
-    injectSession(sessions),
-    signUpHandler(users, usersPath),
-    loginHandler(users, sessions),
-    logoutHandler(sessions),
-    guestBookApi(comments),
-    guestBookRouter(comments, template, guestbook),
-    serveStatic(path),
-    notFoundHandler
-  );
-};
+  app.use(logRequest(logger));
+  app.use(express.urlencoded({ extended: true, }));
+  app.use(injectCookies);
+  app.use(injectSession(sessions));
 
-module.exports = { app };
+  app.get('/signup', signUpHandler(users, usersPath));
+  app.post('/signup', signUpHandler(users, usersPath));
+
+  app.use(loginHandler(users, sessions));
+  app.use(express.static(path));
+
+  app.get('/logout', logoutHandler(sessions));
+
+  const guestBookRouter = createGuestbookRouter(templateFile, guestbook);
+  app.use(guestBookRouter);
+
+  return app;
+}
+
+module.exports = { createApp };
+

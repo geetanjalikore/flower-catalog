@@ -1,5 +1,4 @@
-const { startServer } = require('server');
-const { app } = require('./src/app');
+const { createApp } = require('./src/app.js');
 
 const main = () => {
   const config = {
@@ -9,7 +8,9 @@ const main = () => {
     usersPath: 'resources/users.json'
   };
 
-  startServer(8080, app(config, {}, console.log));
+  const port = 8080;
+  const app = createApp(config, {}, console.log);
+  app.listen(port, () => console.log(`listening on ${port}`));
 };
 
 main();

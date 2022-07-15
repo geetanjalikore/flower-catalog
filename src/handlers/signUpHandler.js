@@ -24,10 +24,10 @@ const signUpPage = `
 </body>
 </html>`;
 
-const signUpHandler = (users, userCredentialsPath) => (req, res, next) => {
-  const { pathname } = req.url;
+const signUpHandler = (users, usersPath) => (req, res, next) => {
+  const { url } = req;
 
-  if (pathname !== '/signup') {
+  if (url !== '/signup') {
     next();
     return;
   }
@@ -38,9 +38,8 @@ const signUpHandler = (users, userCredentialsPath) => (req, res, next) => {
     return;
   }
 
-  const { bodyParams } = req;
-  users.push(bodyParams);
-  fs.writeFileSync(userCredentialsPath, JSON.stringify(users), 'utf8');
+  users.push(req.body);
+  fs.writeFileSync(usersPath, JSON.stringify(users), 'utf8');
   res.end('Registered successfully!!');
 };
 

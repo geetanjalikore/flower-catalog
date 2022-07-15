@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../src/app.js');
+const { createApp } = require('../src/app.js');
 
 const setupRouter = (sessions) => {
   const config = {
@@ -10,7 +10,7 @@ const setupRouter = (sessions) => {
   };
 
   const identity = (x) => x;
-  return app(config, sessions, identity);
+  return createApp(config, sessions, identity);
 };
 
 let router;
@@ -75,7 +75,6 @@ describe('GET /unknown', () => {
     request(router)
       .get('/unknown')
       .set('cookie', 'id=1')
-      .expect('/unknown not found')
       .expect(404, done);
   });
 });
@@ -141,6 +140,16 @@ describe('POST /signup', () => {
       .send('username=nilam&password=jadhav')
       .expect('Registered successfully!!')
       .expect(200, done);
+  });
+});
+
+describe('GET /logout', () => {
+  it('Should logout user', (done) => {
+    request(router)
+      .get('/logout')
+      .set('cookie', 'id=1')
+      .expect(200)
+      .expect('Logged out successfully', done);
   });
 });
 
