@@ -6,7 +6,7 @@ const cookieSession = require('cookie-session');
 
 const { serveSignupPage } = require('./handlers/serveSignupPage.js');
 const { serverLoginPage } = require('./handlers/serveLoginPage.js');
-const { isSessionPresent } = require('./isSessionPresent.js');
+const { isSessionPresent } = require('./handlers/isSessionPresent.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { logoutHandler } = require('./handlers/logoutHandler');
 const { signUpHandler } = require('./handlers/signUpHandler.js');
