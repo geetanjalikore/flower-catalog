@@ -9,8 +9,7 @@ const setupRouter = (sessions) => {
     usersPath: './test/resources/users.json'
   };
 
-  const identity = (x) => x;
-  return createApp(config, sessions, identity);
+  return createApp(config, sessions);
 };
 
 let router;

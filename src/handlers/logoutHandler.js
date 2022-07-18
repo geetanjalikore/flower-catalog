@@ -4,8 +4,8 @@ const logoutHandler = (sessions) => (req, res, next) => {
 
   if (url === '/logout') {
     delete sessions[req.session[id]];
-    res.clearCookie('id');
-    res.end('Logged out successfully');
+    req.session = null;
+    res.redirect('/');
     return;
   }
   next();

@@ -1,9 +1,5 @@
 const { createApp } = require('./src/app.js');
 
-const appendToLogFile = (...args) => {
-
-};
-
 const main = () => {
   const config = {
     guestbook: 'resources/comments.json',
@@ -14,7 +10,9 @@ const main = () => {
   };
 
   const port = 8080;
-  const app = createApp(config, {}, console.log);
+  const sessions = {};
+  const app = createApp(config, sessions);
+
   app.listen(port, () => console.log(`listening on ${port}`));
 };
 

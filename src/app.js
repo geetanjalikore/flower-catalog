@@ -1,10 +1,13 @@
 const fs = require('fs');
 const express = require('express');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
 
-const { logRequest } = require('./handlers/logRequest.js');
+const { serveSignupPage } = require('./handlers/serveSignupPage.js');
+const { serverLoginPage } = require('./handlers/serveLoginPage.js');
+const { isSessionPresent } = require('./isSessionPresent.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
-const { injectCookies } = require('./handlers/injectCookies.js');
-const { injectSession } = require('./handlers/injectSession.js');
 const { logoutHandler } = require('./handlers/logoutHandler');
 const { signUpHandler } = require('./handlers/signUpHandler.js');
 const { searchComment } = require('./handlers/apiHandlers/search.js');
@@ -22,32 +25,35 @@ const createGuestbookRouter = (templateFile, guestbook) => {
   guestBookRouter.get('/guestbook.html', showGuestBook(comments, template));
   guestBookRouter.post('/add-comment', addComment(comments, guestbook));
   guestBookRouter.get('/comments', getComments(comments));
-  guestBookRouter.get('/api.comments', showComments(comments));
-  guestBookRouter.get(/\/api.search.*/, searchComment(comments));
+  guestBookRouter.get('/api/comments', showComments(comments));
+  guestBookRouter.get(/\/api\/search.*/, searchComment(comments));
 
   return guestBookRouter;
 }
 
 const createApp = ({ path, guestbook, templateFile, usersPath, sessionsPath },
-  sessions,
-  logger
+  sessions
 ) => {
 
   const users = JSON.parse(fs.readFileSync(usersPath, 'utf8'));
   const app = express();
 
-  app.use(logRequest(logger));
+  app.use(morgan('tiny'));
   app.use(express.urlencoded({ extended: true, }));
 
-  app.use(injectCookies);
-  app.use(injectSession(sessions));
+  app.use(cookieParser());
+  app.use(cookieSession({
+    name: 'session',
+    keys: ['key1']
+  }));
 
-  app.get('/signup', signUpHandler(users, usersPath));
+  app.get('/signup.html', serveSignupPage);
   app.post('/signup', signUpHandler(users, usersPath));
 
+  app.get('/', serverLoginPage(path));
   app.use(loginHandler(users, sessions, sessionsPath));
+  app.use(isSessionPresent);
   app.use(express.static(path));
-
   app.get('/logout', logoutHandler(sessions));
 
   const guestBookRouter = createGuestbookRouter(templateFile, guestbook);
