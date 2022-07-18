@@ -1,11 +1,16 @@
 const { createApp } = require('./src/app.js');
 
+const appendToLogFile = (...args) => {
+
+};
+
 const main = () => {
   const config = {
     guestbook: 'resources/comments.json',
     templateFile: 'resources/guestBookTemplate.html',
     path: './public',
-    usersPath: 'resources/users.json'
+    usersPath: 'resources/users.json',
+    sessionsPath: 'sessions.js'
   };
 
   const port = 8080;

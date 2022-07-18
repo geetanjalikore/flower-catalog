@@ -11,6 +11,7 @@ const parseCookies = (cookieString) => {
 };
 
 const injectCookies = (req, res, next) => {
+  console.log('cookies', req.headers.cookie);
   req.cookies = parseCookies(req.headers.cookie);
   next();
 };

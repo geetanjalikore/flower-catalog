@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require('express');
+
 const { logRequest } = require('./handlers/logRequest.js');
 const { loginHandler } = require('./handlers/loginHandler.js');
 const { injectCookies } = require('./handlers/injectCookies.js');
@@ -27,7 +28,7 @@ const createGuestbookRouter = (templateFile, guestbook) => {
   return guestBookRouter;
 }
 
-const createApp = ({ path, guestbook, templateFile, usersPath },
+const createApp = ({ path, guestbook, templateFile, usersPath, sessionsPath },
   sessions,
   logger
 ) => {
@@ -37,13 +38,14 @@ const createApp = ({ path, guestbook, templateFile, usersPath },
 
   app.use(logRequest(logger));
   app.use(express.urlencoded({ extended: true, }));
+
   app.use(injectCookies);
   app.use(injectSession(sessions));
 
   app.get('/signup', signUpHandler(users, usersPath));
   app.post('/signup', signUpHandler(users, usersPath));
 
-  app.use(loginHandler(users, sessions));
+  app.use(loginHandler(users, sessions, sessionsPath));
   app.use(express.static(path));
 
   app.get('/logout', logoutHandler(sessions));

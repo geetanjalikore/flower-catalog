@@ -1,9 +1,10 @@
 # TODO
-  - [ ] Pass the dependacies in config
+  - [ ] Persist sessions and logs
   - [ ] Modify invalid request method function 
     - use data stucture to stores the request methods allowed on resourse
 
 # DONE
+  - [X] Pass the dependacies in config
   - [X] Create a handler for log request
   - [X] Make a handler for parsing query params
   - [X] parsist the comments of guestbook into file

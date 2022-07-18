@@ -12,7 +12,7 @@ const loginPage = `
     </head>
 
     <body>
-      <form action="/login" method="post">
+      <form action="/" method="post">
         <div><label for="username">username : </label>
           <input type="text" name="username" id="username">
         </div><br/>
@@ -30,10 +30,11 @@ const isRegistered = (loginUsername, loginPassword, users) => {
   });
 };
 
-const loginHandler = (users, sessions) => {
+const loginHandler = (users, sessions, sessionsPath) => {
   return (req, res, next) => {
     const { url } = req;
-    if (url !== '/login') {
+    if (url !== '/') {
+      console.log('session', req.session);
       if (!req.session) {
         res.statusCode = 401;
         res.end('Access Denied !!! Login to access the flower-catalog');
@@ -44,7 +45,6 @@ const loginHandler = (users, sessions) => {
     }
 
     if (req.method === 'GET' && !req.session) {
-      res.setHeader('content-type', 'text/html');
       res.end(loginPage);
       return;
     }
@@ -56,7 +56,7 @@ const loginHandler = (users, sessions) => {
       return;
     }
 
-    const session = createSession(username, password);
+    const session = createSession(username);
     sessions[session.id] = session;
 
     res.cookie('id', `${session.id}`);
